@@ -5,14 +5,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BarChart3, PieChart, TrendingUp, Users, Target, Clock } from 'lucide-react';
-import SingleSelectCharts from '@/components/charts/SingleSelectCharts';
-import MultiSelectCharts from '@/components/charts/MultiSelectCharts';
-import RatingCharts from '@/components/charts/RatingCharts';
-import LikertScaleCharts from '@/components/charts/LikertScaleCharts';
-import RankingCharts from '@/components/charts/RankingCharts';
-import TextAnalysisCharts from '@/components/charts/TextAnalysisCharts';
-import DateAnalysisCharts from '@/components/charts/DateAnalysisCharts';
-import DropdownCharts from '@/components/charts/DropdownCharts';
+import SingleSelectChartsApex from '@/components/charts/SingleSelectChartsApex';
+import MultiSelectChartsApex from '@/components/charts/MultiSelectChartsApex';
+import RatingChartsApex from '@/components/charts/RatingChartsApex';
+import LikertScaleChartsApex from '@/components/charts/LikertScaleChartsApex';
+import RankingChartsApex from '@/components/charts/RankingChartsApex';
+import TextAnalysisChartsApex from '@/components/charts/TextAnalysisChartsApex';
+import DateAnalysisChartsApex from '@/components/charts/DateAnalysisChartsApex';
+import DropdownChartsApex from '@/components/charts/DropdownChartsApex';
 
 const Dashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('all');
@@ -159,35 +159,35 @@ const Dashboard = () => {
           </TabsList>
 
           <TabsContent value="single-select">
-            <SingleSelectCharts />
+            <SingleSelectChartsApex />
           </TabsContent>
 
           <TabsContent value="multi-select">
-            <MultiSelectCharts />
+            <MultiSelectChartsApex />
           </TabsContent>
 
           <TabsContent value="dropdown">
-            <DropdownCharts />
+            <DropdownChartsApex />
           </TabsContent>
 
           <TabsContent value="rating">
-            <RatingCharts />
+            <RatingChartsApex />
           </TabsContent>
 
           <TabsContent value="likert">
-            <LikertScaleCharts />
+            <LikertScaleChartsApex />
           </TabsContent>
 
           <TabsContent value="ranking">
-            <RankingCharts />
+            <RankingChartsApex />
           </TabsContent>
 
           <TabsContent value="text">
-            <TextAnalysisCharts />
+            <TextAnalysisChartsApex />
           </TabsContent>
 
           <TabsContent value="date">
-            <DateAnalysisCharts />
+            <DateAnalysisChartsApex />
           </TabsContent>
         </Tabs>
 
