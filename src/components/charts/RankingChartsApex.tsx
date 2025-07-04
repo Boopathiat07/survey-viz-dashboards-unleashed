@@ -1,73 +1,131 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
 const RankingChartsApex = () => {
   // Question 1: Job Factors Ranking
-  const jobFactorsData = [
-    { factor: 'Salary', averageRank: 1.8, rank1: 561, rank2: 436, rank3: 187, rank4: 37, rank5: 25 },
-    { factor: 'Work-Life Balance', averageRank: 2.3, rank1: 312, rank2: 498, rank3: 312, rank4: 100, rank5: 25 },
-    { factor: 'Career Growth', averageRank: 2.9, rank1: 187, rank2: 249, rank3: 436, rank4: 312, rank5: 62 },
-    { factor: 'Company Culture', averageRank: 3.2, rank1: 100, rank2: 187, rank3: 374, rank4: 436, rank5: 150 },
-    { factor: 'Benefits', averageRank: 3.8, rank1: 87, rank2: 125, rank3: 187, rank4: 436, rank5: 411 }
-  ];
+  const jobFactorsQuestion = {
+    id: "q1_job_factors_ranking",
+    title: "Rank these job factors by importance (1 = Most Important)",
+    totalResponses: 1247,
+    totalOptions: 5,
+    options: [
+      { id: "salary", label: "Salary", responses: 1247, percentage: 100, averageRank: 1.8 },
+      { id: "work_life_balance", label: "Work-Life Balance", responses: 1247, percentage: 100, averageRank: 2.3 },
+      { id: "career_growth", label: "Career Growth", responses: 1247, percentage: 100, averageRank: 2.9 },
+      { id: "company_culture", label: "Company Culture", responses: 1247, percentage: 100, averageRank: 3.2 },
+      { id: "benefits", label: "Benefits", responses: 1247, percentage: 100, averageRank: 3.8 }
+    ]
+  };
 
   // Question 2: Skills Priority Ranking
-  const skillsPriorityData = [
-    { skill: 'Communication', averageRank: 2.1, rank1: 436, rank2: 374, rank3: 249, rank4: 125, rank5: 62 },
-    { skill: 'Technical Skills', averageRank: 2.4, rank1: 312, rank2: 436, rank3: 312, rank4: 150, rank5: 37 },
-    { skill: 'Leadership', averageRank: 2.8, rank1: 249, rank2: 312, rank3: 374, rank4: 249, rank5: 62 },
-    { skill: 'Problem Solving', averageRank: 3.1, rank1: 187, rank2: 249, rank3: 374, rank4: 312, rank5: 125 },
-    { skill: 'Creativity', averageRank: 3.6, rank1: 62, rank2: 125, rank3: 249, rank4: 436, rank5: 374 }
-  ];
-
-  // Charts for Question 1 - Job Factors
-  const jobFactorsBarOptions: ApexOptions = {
-    chart: { type: 'bar', height: 350 },
-    title: { text: 'Job Factors - Average Ranking (Lower is Better)' },
-    xaxis: { categories: jobFactorsData.map(item => item.factor) },
-    yaxis: { reversed: true, title: { text: 'Average Rank' } },
-    colors: ['#00E396']
+  const skillsPriorityQuestion = {
+    id: "q2_skills_priority_ranking",
+    title: "Rank these skills by development priority (1 = Highest Priority)",
+    totalResponses: 1246,
+    totalOptions: 5,
+    options: [
+      { id: "communication", label: "Communication", responses: 1246, percentage: 100, averageRank: 2.1 },
+      { id: "technical_skills", label: "Technical Skills", responses: 1246, percentage: 100, averageRank: 2.4 },
+      { id: "leadership", label: "Leadership", responses: 1246, percentage: 100, averageRank: 2.8 },
+      { id: "problem_solving", label: "Problem Solving", responses: 1246, percentage: 100, averageRank: 3.1 },
+      { id: "creativity", label: "Creativity", responses: 1246, percentage: 100, averageRank: 3.6 }
+    ]
   };
 
-  const jobFactorsStackedOptions: ApexOptions = {
-    chart: { type: 'bar', height: 350, stacked: true },
-    title: { text: 'Job Factors - Ranking Distribution' },
-    xaxis: { categories: jobFactorsData.map(item => item.factor) },
-    colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
+  const createChartOptions = (question: any, chartType: string) => {
+    const baseOptions: ApexOptions = {
+      chart: { height: 350 },
+      title: { text: `${question.title} - ${chartType}` },
+      colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
+    };
+
+    switch (chartType) {
+      case 'Average Ranking':
+        return {
+          ...baseOptions,
+          chart: { ...baseOptions.chart, type: 'bar' },
+          xaxis: { categories: question.options.map((opt: any) => opt.label) },
+          yaxis: { reversed: true, title: { text: 'Average Rank (Lower is Better)' } }
+        };
+      case 'Horizontal Bar':
+        return {
+          ...baseOptions,
+          chart: { ...baseOptions.chart, type: 'bar' },
+          plotOptions: { bar: { horizontal: true } },
+          xaxis: { categories: question.options.map((opt: any) => opt.label) },
+          yaxis: { reversed: true }
+        };
+      case 'Radar Chart':
+        return {
+          ...baseOptions,
+          chart: { ...baseOptions.chart, type: 'radar' },
+          xaxis: { categories: question.options.map((opt: any) => opt.label) },
+          yaxis: { reversed: true }
+        };
+      default:
+        return baseOptions;
+    }
   };
 
-  const jobFactorsHeatmapOptions: ApexOptions = {
-    chart: { type: 'heatmap', height: 350 },
-    title: { text: 'Job Factors Ranking Heatmap' },
-    xaxis: { categories: ['Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5'] },
-    colors: ['#008FFB']
-  };
+  const renderQuestionSection = (question: any, bgColor: string, borderColor: string) => (
+    <div className="space-y-4">
+      <div className={`${bgColor} p-4 rounded-lg border-l-4 ${borderColor}`}>
+        <h3 className="text-xl font-semibold">{question.title}</h3>
+        <div className="flex gap-4 mt-2 text-sm">
+          <Badge variant="outline">Total Responses: {question.totalResponses}</Badge>
+          <Badge variant="outline">Total Options: {question.totalOptions}</Badge>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Average Rankings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Chart 
+              options={createChartOptions(question, 'Average Ranking')} 
+              series={[{ name: 'Average Rank', data: question.options.map((opt: any) => opt.averageRank) }]} 
+              type="bar" 
+              height={350} 
+            />
+          </CardContent>
+        </Card>
 
-  // Charts for Question 2 - Skills Priority
-  const skillsHorizontalOptions: ApexOptions = {
-    chart: { type: 'bar', height: 350 },
-    plotOptions: { bar: { horizontal: true } },
-    title: { text: 'Skills Priority - Average Ranking' },
-    xaxis: { categories: skillsPriorityData.map(item => item.skill) },
-    yaxis: { reversed: true },
-    colors: ['#775DD0']
-  };
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Horizontal Rankings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Chart 
+              options={createChartOptions(question, 'Horizontal Bar')} 
+              series={[{ name: 'Average Rank', data: question.options.map((opt: any) => opt.averageRank) }]} 
+              type="bar" 
+              height={350} 
+            />
+          </CardContent>
+        </Card>
 
-  const skillsTreemapOptions: ApexOptions = {
-    chart: { type: 'treemap', height: 350 },
-    title: { text: 'Skills Priority - First Choice Volume' },
-    colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
-  };
-
-  const skillsRadarOptions: ApexOptions = {
-    chart: { type: 'radar', height: 350 },
-    title: { text: 'Skills Priority vs Current Proficiency' },
-    xaxis: { categories: skillsPriorityData.map(item => item.skill) },
-    colors: ['#008FFB', '#00E396']
-  };
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Ranking Pattern</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Chart 
+              options={createChartOptions(question, 'Radar Chart')} 
+              series={[{ name: 'Priority Score', data: question.options.map((opt: any) => 6 - opt.averageRank) }]} 
+              type="radar" 
+              height={350} 
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-8">
@@ -76,127 +134,8 @@ const RankingChartsApex = () => {
         <p className="text-gray-600">Priority ranking analysis for each question</p>
       </div>
 
-      {/* Question 1: Job Factors Ranking */}
-      <div className="space-y-4">
-        <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-          <h3 className="text-xl font-semibold text-blue-800">Question 1: Rank these job factors by importance (1 = Most Important)</h3>
-          <p className="text-blue-600 mt-1">1,247 total responses • Kendall's Tau: 0.67 • Ranking Consensus: 73%</p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Average Ranking Results</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chart 
-                options={jobFactorsBarOptions} 
-                series={[{ name: 'Average Rank', data: jobFactorsData.map(item => item.averageRank) }]} 
-                type="bar" 
-                height={350} 
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Ranking Distribution</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chart 
-                options={jobFactorsStackedOptions} 
-                series={[
-                  { name: 'Rank 1', data: jobFactorsData.map(item => item.rank1) },
-                  { name: 'Rank 2', data: jobFactorsData.map(item => item.rank2) },
-                  { name: 'Rank 3', data: jobFactorsData.map(item => item.rank3) },
-                  { name: 'Rank 4', data: jobFactorsData.map(item => item.rank4) },
-                  { name: 'Rank 5', data: jobFactorsData.map(item => item.rank5) }
-                ]} 
-                type="bar" 
-                height={350} 
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Ranking Pattern Heatmap</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chart 
-                options={jobFactorsHeatmapOptions} 
-                series={jobFactorsData.map(item => ({
-                  name: item.factor,
-                  data: [
-                    { x: 'Rank 1', y: item.rank1 },
-                    { x: 'Rank 2', y: item.rank2 },
-                    { x: 'Rank 3', y: item.rank3 },
-                    { x: 'Rank 4', y: item.rank4 },
-                    { x: 'Rank 5', y: item.rank5 }
-                  ]
-                }))} 
-                type="heatmap" 
-                height={350} 
-              />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Question 2: Skills Priority Ranking */}
-      <div className="space-y-4">
-        <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-          <h3 className="text-xl font-semibold text-green-800">Question 2: Rank these skills by development priority (1 = Highest Priority)</h3>
-          <p className="text-green-600 mt-1">1,246 total responses • Kendall's Tau: 0.72 • Ranking Consensus: 78%</p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Skills Priority Ranking</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chart 
-                options={skillsHorizontalOptions} 
-                series={[{ name: 'Average Rank', data: skillsPriorityData.map(item => item.averageRank) }]} 
-                type="bar" 
-                height={350} 
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">First Choice Volume</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chart 
-                options={skillsTreemapOptions} 
-                series={[{ data: skillsPriorityData.map(item => ({ x: item.skill, y: item.rank1 })) }]} 
-                type="treemap" 
-                height={350} 
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Priority vs Proficiency</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Chart 
-                options={skillsRadarOptions} 
-                series={[
-                  { name: 'Development Priority', data: skillsPriorityData.map(item => 6 - item.averageRank) },
-                  { name: 'Current Proficiency', data: [4.2, 3.8, 3.1, 4.1, 2.9] }
-                ]} 
-                type="radar" 
-                height={350} 
-              />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+      {renderQuestionSection(jobFactorsQuestion, "bg-blue-50", "border-blue-500")}
+      {renderQuestionSection(skillsPriorityQuestion, "bg-green-50", "border-green-500")}
     </div>
   );
 };
