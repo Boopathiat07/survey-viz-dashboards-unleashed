@@ -10,7 +10,6 @@ import MultiSelectChartsApex from '@/components/charts/MultiSelectChartsApex';
 import RatingChartsApex from '@/components/charts/RatingChartsApex';
 import LikertScaleChartsApex from '@/components/charts/LikertScaleChartsApex';
 import RankingChartsApex from '@/components/charts/RankingChartsApex';
-import TextAnalysisChartsApex from '@/components/charts/TextAnalysisChartsApex';
 import DateAnalysisChartsApex from '@/components/charts/DateAnalysisChartsApex';
 import DropdownChartsApex from '@/components/charts/DropdownChartsApex';
 
@@ -24,16 +23,15 @@ const Dashboard = () => {
     avgTimeSpent: 12.8,
     responseRate: 78.5,
     lastUpdated: '5 minutes ago',
-    totalQuestions: 28,
+    totalQuestions: 25,
     questionBreakdown: {
       singleSelect: 8,
       multiSelect: 4,
       rating: 6,
       likert: 5,
       ranking: 2,
-      text: 2,
-      date: 3,
-      dropdown: 3
+      dropdown: 3,
+      date: 3
     }
   };
 
@@ -44,7 +42,7 @@ const Dashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Employee Satisfaction Survey 2024</h1>
-            <p className="text-gray-600 mt-1">Comprehensive workplace experience analysis • {overviewMetrics.totalQuestions} Questions</p>
+            <p className="text-gray-600 mt-1">Individual question analysis • {overviewMetrics.totalQuestions} Questions across 7 types</p>
           </div>
           <div className="flex gap-3">
             {['all', '30d', '7d'].map((period) => (
@@ -122,7 +120,7 @@ const Dashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold">{overviewMetrics.totalQuestions}</div>
               <p className="text-xs text-muted-foreground">
-                Across 8 categories
+                Across 7 categories
               </p>
             </CardContent>
           </Card>
@@ -134,7 +132,7 @@ const Dashboard = () => {
             <CardTitle className="text-lg">Survey Structure Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
               {Object.entries(overviewMetrics.questionBreakdown).map(([type, count]) => (
                 <div key={type} className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="text-lg font-bold text-blue-600">{count}</div>
@@ -147,14 +145,13 @@ const Dashboard = () => {
 
         {/* Chart Tabs */}
         <Tabs defaultValue="single-select" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="single-select">Single Select</TabsTrigger>
             <TabsTrigger value="multi-select">Multi Select</TabsTrigger>
             <TabsTrigger value="dropdown">Dropdown</TabsTrigger>
             <TabsTrigger value="rating">Rating</TabsTrigger>
             <TabsTrigger value="likert">Likert Scale</TabsTrigger>
             <TabsTrigger value="ranking">Ranking</TabsTrigger>
-            <TabsTrigger value="text">Text Analysis</TabsTrigger>
             <TabsTrigger value="date">Date Analysis</TabsTrigger>
           </TabsList>
 
@@ -180,10 +177,6 @@ const Dashboard = () => {
 
           <TabsContent value="ranking">
             <RankingChartsApex />
-          </TabsContent>
-
-          <TabsContent value="text">
-            <TextAnalysisChartsApex />
           </TabsContent>
 
           <TabsContent value="date">
