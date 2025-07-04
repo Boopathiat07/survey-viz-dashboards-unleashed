@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,17 +17,17 @@ const Dashboard = () => {
     avgTimeSpent: 12.8,
     responseRate: 78.5,
     lastUpdated: '5 minutes ago',
-    totalQuestions: 63,
+    totalQuestions: 35,
     totalSections: 5
   };
 
-  // Section-based survey structure
+  // Section-based survey structure with all question types
   const surveyData = {
     sections: [
       {
         id: "work_environment",
         title: "Work Environment & Culture",
-        questionCount: 12,
+        questionCount: 7,
         questions: [
           {
             id: "q1",
@@ -37,10 +36,10 @@ const Dashboard = () => {
             totalResponses: 1247,
             totalOptions: 4,
             options: [
-              { label: "Remote Work", responses: 561 },
-              { label: "Hybrid", responses: 374 },
-              { label: "Office-based", responses: 249 },
-              { label: "Flexible", responses: 63 }
+              { label: "Remote Work", responses: 561, percentage: 45.0 },
+              { label: "Hybrid", responses: 374, percentage: 30.0 },
+              { label: "Office-based", responses: 249, percentage: 20.0 },
+              { label: "Flexible", responses: 63, percentage: 5.0 }
             ]
           },
           {
@@ -52,12 +51,12 @@ const Dashboard = () => {
             totalSelections: 3596,
             averageSelectionsPerPerson: 2.9,
             options: [
-              { label: "Quiet Spaces", responses: 823 },
-              { label: "Collaborative Areas", responses: 734 },
-              { label: "Natural Light", responses: 698 },
-              { label: "Ergonomic Furniture", responses: 587 },
-              { label: "Temperature Control", responses: 456 },
-              { label: "Plants/Greenery", responses: 298 }
+              { label: "Quiet Spaces", responses: 823, percentage: 66.0 },
+              { label: "Collaborative Areas", responses: 734, percentage: 58.9 },
+              { label: "Natural Light", responses: 698, percentage: 56.0 },
+              { label: "Ergonomic Furniture", responses: 587, percentage: 47.1 },
+              { label: "Temperature Control", responses: 456, percentage: 36.6 },
+              { label: "Plants/Greenery", responses: 298, percentage: 23.9 }
             ]
           },
           {
@@ -67,14 +66,79 @@ const Dashboard = () => {
             totalResponses: 1247,
             totalOptions: 8,
             options: [
-              { label: "Engineering", responses: 289 },
-              { label: "Sales", responses: 234 },
-              { label: "Marketing", responses: 187 },
-              { label: "Operations", responses: 187 },
-              { label: "HR", responses: 156 },
-              { label: "Finance", responses: 143 },
-              { label: "Legal", responses: 25 },
-              { label: "Other", responses: 26 }
+              { label: "Engineering", responses: 289, percentage: 23.2 },
+              { label: "Sales", responses: 234, percentage: 18.8 },
+              { label: "Marketing", responses: 187, percentage: 15.0 },
+              { label: "Operations", responses: 187, percentage: 15.0 },
+              { label: "HR", responses: 156, percentage: 12.5 },
+              { label: "Finance", responses: 143, percentage: 11.5 },
+              { label: "Legal", responses: 25, percentage: 2.0 },
+              { label: "Other", responses: 26, percentage: 2.1 }
+            ]
+          },
+          {
+            id: "q4",
+            title: "Rate your workspace satisfaction",
+            type: "rating",
+            totalResponses: 1247,
+            totalOptions: 5,
+            averageStars: 4.1,
+            options: [
+              { label: "1 Star", responses: 18, percentage: 1.4 },
+              { label: "2 Stars", responses: 45, percentage: 3.6 },
+              { label: "3 Stars", responses: 187, percentage: 15.0 },
+              { label: "4 Stars", responses: 623, percentage: 49.9 },
+              { label: "5 Stars", responses: 374, percentage: 30.0 }
+            ]
+          },
+          {
+            id: "q5",
+            title: "Our workplace promotes collaboration",
+            type: "likert",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Strongly Disagree", responses: 31, percentage: 2.5 },
+              { label: "Disagree", responses: 87, percentage: 7.0 },
+              { label: "Neutral", responses: 312, percentage: 25.0 },
+              { label: "Agree", responses: 561, percentage: 45.0 },
+              { label: "Strongly Agree", responses: 256, percentage: 20.5 }  
+            ]
+          },
+          {
+            id: "q6",
+            title: "Rank office amenities by importance",
+            type: "ranking",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Cafeteria", responses: 1247, percentage: 100, averageRank: 1.9 },
+              { label: "Parking", responses: 1247, percentage: 100, averageRank: 2.4 },
+              { label: "Gym", responses: 1247, percentage: 100, averageRank: 2.8 },
+              { label: "Game Area", responses: 1247, percentage: 100, averageRank: 3.5 },
+              { label: "Meditation Room", responses: 1247, percentage: 100, averageRank: 4.4 }
+            ]
+          },
+          {
+            id: "q7",
+            title: "When did you last use office facilities?",
+            type: "date",
+            totalResponses: 1247,
+            totalOptions: 12,
+            pattern: "month",
+            options: [
+              { label: "Dec 2023", responses: 87, percentage: 7.0 },
+              { label: "Jan 2024", responses: 145, percentage: 11.6 },
+              { label: "Feb 2024", responses: 167, percentage: 13.4 },
+              { label: "Mar 2024", responses: 189, percentage: 15.2 },
+              { label: "Apr 2024", responses: 178, percentage: 14.3 },
+              { label: "May 2024", responses: 156, percentage: 12.5 },
+              { label: "Jun 2024", responses: 134, percentage: 10.7 },
+              { label: "Jul 2024", responses: 98, percentage: 7.9 },
+              { label: "Aug 2024", responses: 76, percentage: 6.1 },
+              { label: "Sep 2024", responses: 54, percentage: 4.3 },
+              { label: "Oct 2024", responses: 32, percentage: 2.6 },
+              { label: "Nov 2024", responses: 18, percentage: 1.4 }
             ]
           }
         ]
@@ -82,49 +146,114 @@ const Dashboard = () => {
       {
         id: "job_satisfaction",
         title: "Job Satisfaction & Performance",
-        questionCount: 15,
+        questionCount: 7,
         questions: [
           {
-            id: "q4",
+            id: "q8",
+            title: "How satisfied are you with your current role?",
+            type: "single_select",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Very Dissatisfied", responses: 25, percentage: 2.0 },
+              { label: "Dissatisfied", responses: 87, percentage: 7.0 },
+              { label: "Neutral", responses: 249, percentage: 20.0 },
+              { label: "Satisfied", responses: 561, percentage: 45.0 },
+              { label: "Very Satisfied", responses: 325, percentage: 26.0 }
+            ]
+          },
+          {
+            id: "q9",
+            title: "Which factors contribute to job satisfaction?",
+            type: "multi_select",
+            totalResponses: 1247,
+            totalOptions: 7,
+            totalSelections: 4238,
+            averageSelectionsPerPerson: 3.4,
+            options: [
+              { label: "Work-Life Balance", responses: 948, percentage: 76.0 },
+              { label: "Career Growth", responses: 823, percentage: 66.0 },
+              { label: "Recognition", responses: 734, percentage: 58.9 },
+              { label: "Compensation", responses: 687, percentage: 55.1 },
+              { label: "Team Collaboration", responses: 598, percentage: 48.0 },
+              { label: "Job Security", responses: 456, percentage: 36.6 },
+              { label: "Autonomy", responses: 392, percentage: 31.4 }
+            ]
+          },
+          {
+            id: "q10",
+            title: "Select your experience level",
+            type: "dropdown",
+            totalResponses: 1247,
+            totalOptions: 6,
+            options: [
+              { label: "Entry Level (0-2 years)", responses: 198, percentage: 15.9 },
+              { label: "Junior (2-4 years)", responses: 267, percentage: 21.4 },
+              { label: "Mid-Level (4-7 years)", responses: 398, percentage: 31.9 },
+              { label: "Senior (7-10 years)", responses: 234, percentage: 18.8 },
+              { label: "Lead (10-15 years)", responses: 112, percentage: 9.0 },
+              { label: "Expert (15+ years)", responses: 38, percentage: 3.0 }
+            ]
+          },
+          {
+            id: "q11",
             title: "Rate your overall job satisfaction",
             type: "rating",
             totalResponses: 1247,
             totalOptions: 5,
             averageStars: 3.9,
             options: [
-              { label: "1 Star", responses: 25 },
-              { label: "2 Stars", responses: 62 },
-              { label: "3 Stars", responses: 249 },
-              { label: "4 Stars", responses: 561 },
-              { label: "5 Stars", responses: 350 }
+              { label: "1 Star", responses: 25, percentage: 2.0 },
+              { label: "2 Stars", responses: 62, percentage: 5.0 },
+              { label: "3 Stars", responses: 249, percentage: 20.0 },
+              { label: "4 Stars", responses: 561, percentage: 45.0 },
+              { label: "5 Stars", responses: 350, percentage: 28.0 }
             ]
           },
           {
-            id: "q5",
-            title: "Our company values work-life balance",
+            id: "q12",
+            title: "I feel valued as an employee",
             type: "likert",
             totalResponses: 1247,
             totalOptions: 5,
             options: [
-              { label: "Strongly Disagree", responses: 25 },
-              { label: "Disagree", responses: 100 },
-              { label: "Neutral", responses: 249 },
-              { label: "Agree", responses: 498 },
-              { label: "Strongly Agree", responses: 375 }
+              { label: "Strongly Disagree", responses: 43, percentage: 3.4 },
+              { label: "Disagree", responses: 124, percentage: 9.9 },
+              { label: "Neutral", responses: 287, percentage: 23.0 },
+              { label: "Agree", responses: 498, percentage: 39.9 },
+              { label: "Strongly Agree", responses: 295, percentage: 23.7 }
             ]
           },
           {
-            id: "q6",
-            title: "Rank job factors by importance",
+            id: "q13",
+            title: "Rank job satisfaction factors by priority",
             type: "ranking",
             totalResponses: 1247,
             totalOptions: 5,
             options: [
-              { label: "Salary", responses: 1247, averageRank: 1.8 },
-              { label: "Work-Life Balance", responses: 1247, averageRank: 2.3 },
-              { label: "Career Growth", responses: 1247, averageRank: 2.9 },
-              { label: "Company Culture", responses: 1247, averageRank: 3.2 },
-              { label: "Benefits", responses: 1247, averageRank: 3.8 }
+              { label: "Salary", responses: 1247, percentage: 100, averageRank: 1.8 },
+              { label: "Work-Life Balance", responses: 1247, percentage: 100, averageRank: 2.3 },
+              { label: "Career Growth", responses: 1247, percentage: 100, averageRank: 2.9 },
+              { label: "Company Culture", responses: 1247, percentage: 100, averageRank: 3.2 },
+              { label: "Benefits", responses: 1247, percentage: 100, averageRank: 3.8 }
+            ]
+          },
+          {
+            id: "q14",
+            title: "When did you start feeling satisfied with your role?",
+            type: "date",
+            totalResponses: 1247,
+            totalOptions: 8,
+            pattern: "quarter",
+            options: [
+              { label: "Q1 2023", responses: 89, percentage: 7.1 },
+              { label: "Q2 2023", responses: 134, percentage: 10.7 },
+              { label: "Q3 2023", responses: 178, percentage: 14.3 },
+              { label: "Q4 2023", responses: 223, percentage: 17.9 },
+              { label: "Q1 2024", responses: 267, percentage: 21.4 },
+              { label: "Q2 2024", responses: 198, percentage: 15.9 },
+              { label: "Q3 2024", responses: 112, percentage: 9.0 },
+              { label: "Q4 2024", responses: 46, percentage: 3.7 }
             ]
           }
         ]
@@ -132,27 +261,116 @@ const Dashboard = () => {
       {
         id: "career_development",
         title: "Career Development & Training",
-        questionCount: 11,
+        questionCount: 7,
         questions: [
           {
-            id: "q7",
+            id: "q15",
+            title: "Are you interested in career advancement?",
+            type: "single_select",
+            totalResponses: 1247,
+            totalOptions: 3,
+            options: [
+              { label: "Yes, actively seeking", responses: 687, percentage: 55.1 },
+              { label: "Yes, but not actively", responses: 423, percentage: 33.9 },
+              { label: "No, satisfied with current role", responses: 137, percentage: 11.0 }
+            ]
+          },
+          {
+            id: "q16",
+            title: "Which development areas interest you?",
+            type: "multi_select",
+            totalResponses: 1247,
+            totalOptions: 8,
+            totalSelections: 3741,
+            averageSelectionsPerPerson: 3.0,
+            options: [
+              { label: "Technical Skills", responses: 823, percentage: 66.0 },
+              { label: "Leadership", responses: 612, percentage: 49.1 },
+              { label: "Communication", responses: 534, percentage: 42.8 },
+              { label: "Project Management", responses: 498, percentage: 39.9 },
+              { label: "Data Analysis", responses: 445, percentage: 35.7 },
+              { label: "Creative Skills", responses: 334, percentage: 26.8 },
+              { label: "Sales & Marketing", responses: 267, percentage: 21.4 },
+              { label: "Finance", responses: 228, percentage: 18.3 }
+            ]
+          },
+          {
+            id: "q17",
+            title: "Select your preferred learning format",
+            type: "dropdown",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Online Courses", responses: 456, percentage: 36.6 },
+              { label: "In-Person Workshops", responses: 312, percentage: 25.0 },
+              { label: "Mentorship Programs", responses: 245, percentage: 19.6 },
+              { label: "Conference Attendance", responses: 156, percentage: 12.5 },
+              { label: "Self-Study Materials", responses: 78, percentage: 6.3 }
+            ]
+          },
+          {
+            id: "q18",
+            title: "Rate the quality of training programs",
+            type: "rating",
+            totalResponses: 1247,
+            totalOptions: 5,
+            averageStars: 3.6,
+            options: [
+              { label: "1 Star", responses: 62, percentage: 5.0 },
+              { label: "2 Stars", responses: 124, percentage: 9.9 },
+              { label: "3 Stars", responses: 374, percentage: 30.0 },
+              { label: "4 Stars", responses: 436, percentage: 35.0 },
+              { label: "5 Stars", responses: 251, percentage: 20.1 }
+            ]
+          },
+          {
+            id: "q19",
+            title: "The company supports my career development",
+            type: "likert",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Strongly Disagree", responses: 87, percentage: 7.0 },
+              { label: "Disagree", responses: 187, percentage: 15.0 },
+              { label: "Neutral", responses: 374, percentage: 30.0 },
+              { label: "Agree", responses: 436, percentage: 35.0 },
+              { label: "Strongly Agree", responses: 163, percentage: 13.1 }
+            ]
+          },
+          {
+            id: "q20",
+            title: "Rank career development priorities",
+            type: "ranking",
+            totalResponses: 1247,
+            totalOptions: 6,
+            options: [
+              { label: "Skill Development", responses: 1247, percentage: 100, averageRank: 1.7 },
+              { label: "Promotion Opportunities", responses: 1247, percentage: 100, averageRank: 2.4 },
+              { label: "Mentorship", responses: 1247, percentage: 100, averageRank: 3.1 },
+              { label: "Cross-functional Projects", responses: 1247, percentage: 100, averageRank: 3.6 },
+              { label: "External Training", responses: 1247, percentage: 100, averageRank: 4.2 },
+              { label: "Conference Attendance", responses: 1247, percentage: 100, averageRank: 4.9 }
+            ]
+          },
+          {
+            id: "q21",
             title: "When did you last attend training?",
             type: "date",
             totalResponses: 1247,
             totalOptions: 11,
             pattern: "month",
             options: [
-              { label: "Jan 2024", responses: 145 },
-              { label: "Feb 2024", responses: 167 },
-              { label: "Mar 2024", responses: 189 },
-              { label: "Apr 2024", responses: 178 },
-              { label: "May 2024", responses: 156 },
-              { label: "Jun 2024", responses: 134 },
-              { label: "Jul 2024", responses: 98 },
-              { label: "Aug 2024", responses: 76 },
-              { label: "Sep 2024", responses: 54 },
-              { label: "Oct 2024", responses: 32 },
-              { label: "Nov 2024", responses: 18 }
+              { label: "Jan 2024", responses: 145, percentage: 11.6 },
+              { label: "Feb 2024", responses: 167, percentage: 13.4 },
+              { label: "Mar 2024", responses: 189, percentage: 15.2 },
+              { label: "Apr 2024", responses: 178, percentage: 14.3 },
+              { label: "May 2024", responses: 156, percentage: 12.5 },
+              { label: "Jun 2024", responses: 134, percentage: 10.7 },
+              { label: "Jul 2024", responses: 98, percentage: 7.9 },
+              { label: "Aug 2024", responses: 76, percentage: 6.1 },
+              { label: "Sep 2024", responses: 54, percentage: 4.3 },
+              { label: "Oct 2024", responses: 32, percentage: 2.6 },
+              { label: "Nov 2024", responses: 18, percentage: 1.4 }
             ]
           }
         ]
@@ -160,23 +378,109 @@ const Dashboard = () => {
       {
         id: "compensation_benefits",
         title: "Compensation & Benefits",
-        questionCount: 13,
+        questionCount: 7,
         questions: [
           {
-            id: "q8",
-            title: "Which benefits are most important?",
+            id: "q22",
+            title: "Are you satisfied with your current compensation?",
+            type: "single_select",
+            totalResponses: 1247,
+            totalOptions: 4,
+            options: [
+              { label: "Very Satisfied", responses: 187, percentage: 15.0 },
+              { label: "Satisfied", responses: 498, percentage: 39.9 },
+              { label: "Dissatisfied", responses: 436, percentage: 35.0 },
+              { label: "Very Dissatisfied", responses: 126, percentage: 10.1 }
+            ]
+          },
+          {
+            id: "q23",
+            title: "Which benefits are most important to you?",
             type: "multi_select",
             totalResponses: 1247,
             totalOptions: 6,
             totalSelections: 3986,
             averageSelectionsPerPerson: 3.2,
             options: [
-              { label: "Health Insurance", responses: 1085 },
-              { label: "Flexible Hours", responses: 948 },
-              { label: "Remote Work", responses: 761 },
-              { label: "Professional Development", responses: 598 },
-              { label: "Gym Membership", responses: 337 },
-              { label: "Free Meals", responses: 262 }
+              { label: "Health Insurance", responses: 1085, percentage: 87.0 },
+              { label: "Flexible Hours", responses: 948, percentage: 76.0 },
+              { label: "Remote Work", responses: 761, percentage: 61.0 },
+              { label: "Professional Development", responses: 598, percentage: 48.0 },
+              { label: "Gym Membership", responses: 337, percentage: 27.0 },
+              { label: "Free Meals", responses: 262, percentage: 21.0 }
+            ]
+          },
+          {
+            id: "q24",
+            title: "Select your salary range",
+            type: "dropdown",
+            totalResponses: 1247,
+            totalOptions: 7,
+            options: [
+              { label: "$30,000 - $50,000", responses: 156, percentage: 12.5 },
+              { label: "$50,000 - $70,000", responses: 234, percentage: 18.8 },
+              { label: "$70,000 - $90,000", responses: 312, percentage: 25.0 },
+              { label: "$90,000 - $110,000", responses: 287, percentage: 23.0 },
+              { label: "$110,000 - $130,000", responses: 187, percentage: 15.0 },
+              { label: "$130,000 - $150,000", responses: 49, percentage: 3.9 },
+              { label: "$150,000+", responses: 22, percentage: 1.8 }
+            ]
+          },
+          {
+            id: "q25",
+            title: "Rate the value of your benefits package",
+            type: "rating",
+            totalResponses: 1247,
+            totalOptions: 5,
+            averageStars: 3.4,
+            options: [
+              { label: "1 Star", responses: 87, percentage: 7.0 },
+              { label: "2 Stars", responses: 156, percentage: 12.5 },
+              { label: "3 Stars", responses: 436, percentage: 35.0 },
+              { label: "4 Stars", responses: 374, percentage: 30.0 },
+              { label: "5 Stars", responses: 194, percentage: 15.6 }
+            ]
+          },
+          {
+            id: "q26",
+            title: "The compensation is fair for my role",
+            type: "likert",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Strongly Disagree", responses: 124, percentage: 9.9 },
+              { label: "Disagree", responses: 287, percentage: 23.0 },
+              { label: "Neutral", responses: 312, percentage: 25.0 },
+              { label: "Agree", responses: 374, percentage: 30.0 },
+              { label: "Strongly Agree", responses: 150, percentage: 12.0 }
+            ]
+          },
+          {
+            id: "q27",
+            title: "Rank compensation components by importance",
+            type: "ranking",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Base Salary", responses: 1247, percentage: 100, averageRank: 1.2 },
+              { label: "Health Benefits", responses: 1247, percentage: 100, averageRank: 2.1 },
+              { label: "Retirement Plan", responses: 1247, percentage: 100, averageRank: 2.8 },
+              { label: "Bonus/Incentives", responses: 1247, percentage: 100, averageRank: 3.4 },
+              { label: "Stock Options", responses: 1247, percentage: 100, averageRank: 4.5 }
+            ]
+          },
+          {
+            id: "q28",
+            title: "When did you last receive a raise?",
+            type: "date",
+            totalResponses: 1247,
+            totalOptions: 4,
+            pattern: "year",
+            options: [
+              { label: "2021", responses: 98, percentage: 7.9 },
+              { label: "2022", responses: 287, percentage: 23.0 },
+              { label: "2023", responses: 561, percentage: 45.0 },
+              { label: "2024", responses: 301, percentage: 24.1 }
             ]
           }
         ]
@@ -184,21 +488,114 @@ const Dashboard = () => {
       {
         id: "communication_feedback",
         title: "Communication & Feedback",
-        questionCount: 12,
+        questionCount: 7,
         questions: [
           {
-            id: "q9",
-            title: "Rate manager support",
+            id: "q29",
+            title: "How effective is communication in your team?",
+            type: "single_select",
+            totalResponses: 1247,
+            totalOptions: 4,
+            options: [
+              { label: "Excellent", responses: 234, percentage: 18.8 },
+              { label: "Good", responses: 561, percentage: 45.0 },
+              { label: "Fair", responses: 312, percentage: 25.0 },
+              { label: "Poor", responses: 140, percentage: 11.2 }
+            ]
+          },
+          {
+            id: "q30",
+            title: "Which communication tools do you prefer?",
+            type: "multi_select",
+            totalResponses: 1247,
+            totalOptions: 6,
+            totalSelections: 2869,
+            averageSelectionsPerPerson: 2.3,
+            options: [
+              { label: "Email", responses: 823, percentage: 66.0 },
+              { label: "Slack/Teams", responses: 734, percentage: 58.9 },
+              { label: "Video Calls", responses: 612, percentage: 49.1 },
+              { label: "In-Person Meetings", responses: 445, percentage: 35.7 },
+              { label: "Phone Calls", responses: 156, percentage: 12.5 },
+              { label: "Project Management Tools", responses: 99, percentage: 7.9 }
+            ]
+          },
+          {
+            id: "q31",
+            title: "Select your preferred feedback frequency",
+            type: "dropdown",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Weekly", responses: 187, percentage: 15.0 },
+              { label: "Bi-weekly", responses: 312, percentage: 25.0 },
+              { label: "Monthly", responses: 498, percentage: 39.9 },
+              { label: "Quarterly", responses: 187, percentage: 15.0 },
+              { label: "Annually", responses: 63, percentage: 5.1 }
+            ]
+          },
+          {
+            id: "q32",
+            title: "Rate manager support and feedback quality",
             type: "rating",
             totalResponses: 1247,
             totalOptions: 5,
             averageStars: 3.8,
             options: [
-              { label: "1 Star", responses: 37 },
-              { label: "2 Stars", responses: 87 },
-              { label: "3 Stars", responses: 312 },
-              { label: "4 Stars", responses: 436 },
-              { label: "5 Stars", responses: 375 }
+              { label: "1 Star", responses: 37, percentage: 3.0 },
+              { label: "2 Stars", responses: 87, percentage: 7.0 },
+              { label: "3 Stars", responses: 312, percentage: 25.0 },
+              { label: "4 Stars", responses: 436, percentage: 35.0 },
+              { label: "5 Stars", responses: 375, percentage: 30.1 }
+            ]
+          },
+          {
+            id: "q33",
+            title: "I receive constructive feedback regularly",
+            type: "likert",
+            totalResponses: 1247,
+            totalOptions: 5,
+            options: [
+              { label: "Strongly Disagree", responses: 62, percentage: 5.0 },
+              { label: "Disagree", responses: 156, percentage: 12.5 },
+              { label: "Neutral", responses: 287, percentage: 23.0 },
+              { label: "Agree", responses: 498, percentage: 39.9 },
+              { label: "Strongly Agree", responses: 244, percentage: 19.6 }
+            ]
+          },
+          {
+            id: "q34",
+            title: "Rank communication preferences",
+            type: "ranking",
+            totalResponses: 1247,
+            totalOptions: 4,
+            options: [
+              { label: "Face-to-Face", responses: 1247, percentage: 100, averageRank: 1.6 },
+              { label: "Video Calls", responses: 1247, percentage: 100, averageRank: 2.3 },
+              { label: "Email", responses: 1247, percentage: 100, averageRank: 2.8 },
+              { label: "Chat/Messaging", responses: 1247, percentage: 100, averageRank: 3.3 }
+            ]
+          },
+          {
+            id: "q35",
+            title: "When did you last have a one-on-one meeting?",
+            type: "date",
+            totalResponses: 1247,
+            totalOptions: 12,
+            pattern: "week",
+            options: [
+              { label: "Week 45", responses: 234, percentage: 18.8 },
+              { label: "Week 46", responses: 187, percentage: 15.0 },
+              { label: "Week 47", responses: 156, percentage: 12.5 },
+              { label: "Week 48", responses: 134, percentage: 10.7 },
+              { label: "Week 49", responses: 112, percentage: 9.0 },
+              { label: "Week 50", responses: 98, percentage: 7.9 },
+              { label: "Week 51", responses: 87, percentage: 7.0 },
+              { label: "Week 52", responses: 76, percentage: 6.1 },
+              { label: "Week 1", responses: 65, percentage: 5.2 },
+              { label: "Week 2", responses: 54, percentage: 4.3 },
+              { label: "Week 3", responses: 32, percentage: 2.6 },
+              { label: "Week 4", responses: 12, percentage: 1.0 }
             ]
           }
         ]
@@ -278,7 +675,7 @@ const Dashboard = () => {
           ...baseOptions,
           chart: { ...baseOptions.chart, type: 'heatmap' as const },
           xaxis: { categories: ['Priority'], labels: { show: false } },
-          yaxis: { categories: question.options.map((opt: any) => opt.label), labels: { show: false } },
+          yaxis: { labels: { show: false } },
           tooltip: { y: { formatter: (val: number) => `Rank: ${val.toFixed(1)}` } }
         };
       

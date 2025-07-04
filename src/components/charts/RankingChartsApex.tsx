@@ -31,7 +31,6 @@ const RankingChartsApex = () => {
         labels: { show: false }
       },
       yaxis: { 
-        categories: question.options.map((opt: any) => opt.label),
         labels: { show: false }
       },
       colors: ['#008FFB'],
