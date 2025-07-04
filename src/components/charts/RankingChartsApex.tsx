@@ -6,7 +6,6 @@ import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
 const RankingChartsApex = () => {
-  // Question 1: Job Factors Ranking
   const jobFactorsQuestion = {
     id: "q1_job_factors_ranking",
     title: "Rank these job factors by importance (1 = Most Important)",
@@ -21,54 +20,27 @@ const RankingChartsApex = () => {
     ]
   };
 
-  // Question 2: Skills Priority Ranking
-  const skillsPriorityQuestion = {
-    id: "q2_skills_priority_ranking",
-    title: "Rank these skills by development priority (1 = Highest Priority)",
-    totalResponses: 1246,
-    totalOptions: 5,
-    options: [
-      { id: "communication", label: "Communication", responses: 1246, percentage: 100, averageRank: 2.1 },
-      { id: "technical_skills", label: "Technical Skills", responses: 1246, percentage: 100, averageRank: 2.4 },
-      { id: "leadership", label: "Leadership", responses: 1246, percentage: 100, averageRank: 2.8 },
-      { id: "problem_solving", label: "Problem Solving", responses: 1246, percentage: 100, averageRank: 3.1 },
-      { id: "creativity", label: "Creativity", responses: 1246, percentage: 100, averageRank: 3.6 }
-    ]
-  };
-
-  const createChartOptions = (question: any, chartType: string) => {
-    const baseOptions: ApexOptions = {
-      chart: { height: 350 },
-      title: { text: `${question.title} - ${chartType}` },
-      colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
+  const createChartOptions = (question: any): ApexOptions => {
+    return {
+      chart: { 
+        height: 350,
+        type: 'heatmap' as const
+      },
+      xaxis: { 
+        categories: ['Priority'],
+        labels: { show: false }
+      },
+      yaxis: { 
+        categories: question.options.map((opt: any) => opt.label),
+        labels: { show: false }
+      },
+      colors: ['#008FFB'],
+      dataLabels: { enabled: false },
+      legend: { show: false },
+      tooltip: { 
+        y: { formatter: (val: number) => `Average rank: ${val.toFixed(1)}` }
+      }
     };
-
-    switch (chartType) {
-      case 'Average Ranking':
-        return {
-          ...baseOptions,
-          chart: { ...baseOptions.chart, type: 'bar' },
-          xaxis: { categories: question.options.map((opt: any) => opt.label) },
-          yaxis: { reversed: true, title: { text: 'Average Rank (Lower is Better)' } }
-        };
-      case 'Horizontal Bar':
-        return {
-          ...baseOptions,
-          chart: { ...baseOptions.chart, type: 'bar' },
-          plotOptions: { bar: { horizontal: true } },
-          xaxis: { categories: question.options.map((opt: any) => opt.label) },
-          yaxis: { reversed: true }
-        };
-      case 'Radar Chart':
-        return {
-          ...baseOptions,
-          chart: { ...baseOptions.chart, type: 'radar' },
-          xaxis: { categories: question.options.map((opt: any) => opt.label) },
-          yaxis: { reversed: true }
-        };
-      default:
-        return baseOptions;
-    }
   };
 
   const renderQuestionSection = (question: any, bgColor: string, borderColor: string) => (
@@ -81,61 +53,31 @@ const RankingChartsApex = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Average Rankings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Chart 
-              options={createChartOptions(question, 'Average Ranking')} 
-              series={[{ name: 'Average Rank', data: question.options.map((opt: any) => opt.averageRank) }]} 
-              type="bar" 
-              height={350} 
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Horizontal Rankings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Chart 
-              options={createChartOptions(question, 'Horizontal Bar')} 
-              series={[{ name: 'Average Rank', data: question.options.map((opt: any) => opt.averageRank) }]} 
-              type="bar" 
-              height={350} 
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Ranking Pattern</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Chart 
-              options={createChartOptions(question, 'Radar Chart')} 
-              series={[{ name: 'Priority Score', data: question.options.map((opt: any) => 6 - opt.averageRank) }]} 
-              type="radar" 
-              height={350} 
-            />
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardContent className="pt-6">
+          <Chart 
+            options={createChartOptions(question)} 
+            series={[{ 
+              name: 'Priority',
+              data: question.options.map((opt: any) => ({
+                x: 'Priority',
+                y: 6 - opt.averageRank
+              }))
+            }]} 
+            type="heatmap" 
+            height={350} 
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">Ranking Questions - Individual Analysis</h2>
-        <p className="text-gray-600">Priority ranking analysis for each question</p>
+        <h2 className="text-2xl font-bold">Ranking Questions</h2>
       </div>
-
       {renderQuestionSection(jobFactorsQuestion, "bg-blue-50", "border-blue-500")}
-      {renderQuestionSection(skillsPriorityQuestion, "bg-green-50", "border-green-500")}
     </div>
   );
 };

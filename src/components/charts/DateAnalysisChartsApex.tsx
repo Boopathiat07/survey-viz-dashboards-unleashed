@@ -28,73 +28,26 @@ const DateAnalysisChartsApex = () => {
     ]
   };
 
-  // Question 2: Project Start Date (Week pattern)
-  const projectStartQuestion = {
-    id: "q2_project_start",
-    title: "When did your current project start?",
-    totalResponses: 1247,
-    totalOptions: 12,
-    pattern: "week",
-    options: [
-      { id: "2024-w40", label: "Week 40", responses: 87, percentage: 7.0 },
-      { id: "2024-w41", label: "Week 41", responses: 95, percentage: 7.6 },
-      { id: "2024-w42", label: "Week 42", responses: 103, percentage: 8.3 },
-      { id: "2024-w43", label: "Week 43", responses: 112, percentage: 9.0 },
-      { id: "2024-w44", label: "Week 44", responses: 125, percentage: 10.0 },
-      { id: "2024-w45", label: "Week 45", responses: 134, percentage: 10.7 },
-      { id: "2024-w46", label: "Week 46", responses: 121, percentage: 9.7 },
-      { id: "2024-w47", label: "Week 47", responses: 108, percentage: 8.7 },
-      { id: "2024-w48", label: "Week 48", responses: 99, percentage: 7.9 },
-      { id: "2024-w49", label: "Week 49", responses: 87, percentage: 7.0 },
-      { id: "2024-w50", label: "Week 50", responses: 92, percentage: 7.4 },
-      { id: "2024-w51", label: "Week 51", responses: 84, percentage: 6.7 }
-    ]
-  };
-
-  // Question 3: Performance Review Date (Year pattern)
-  const reviewDateQuestion = {
-    id: "q3_review_date",
-    title: "When was your last performance review?",
-    totalResponses: 1247,
-    totalOptions: 4,
-    pattern: "year",
-    options: [
-      { id: "2021", label: "2021", responses: 87, percentage: 7.0 },
-      { id: "2022", label: "2022", responses: 234, percentage: 18.8 },
-      { id: "2023", label: "2023", responses: 498, percentage: 39.9 },
-      { id: "2024", label: "2024", responses: 428, percentage: 34.3 }
-    ]
-  };
-
-  const createChartOptions = (question: any, chartType: string) => {
-    const baseOptions: ApexOptions = {
-      chart: { height: 350 },
-      title: { text: `${question.title} - ${chartType} (${question.pattern} pattern)` },
-      colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
+  const createChartOptions = (question: any): ApexOptions => {
+    return {
+      chart: { 
+        height: 350,
+        type: 'area' as const
+      },
+      xaxis: { 
+        categories: question.options.map((opt: any) => opt.label),
+        labels: { show: false }
+      },
+      yaxis: { labels: { show: false } },
+      colors: ['#008FFB'],
+      dataLabels: { enabled: false },
+      grid: { show: false },
+      legend: { show: false },
+      tooltip: { 
+        x: { show: true },
+        y: { formatter: (val: number) => `${val} responses` }
+      }
     };
-
-    switch (chartType) {
-      case 'Line Chart':
-        return {
-          ...baseOptions,
-          chart: { ...baseOptions.chart, type: 'line' },
-          xaxis: { categories: question.options.map((opt: any) => opt.label) }
-        };
-      case 'Area Chart':
-        return {
-          ...baseOptions,
-          chart: { ...baseOptions.chart, type: 'area' },
-          xaxis: { categories: question.options.map((opt: any) => opt.label) }
-        };
-      case 'Bar Chart':
-        return {
-          ...baseOptions,
-          chart: { ...baseOptions.chart, type: 'bar' },
-          xaxis: { categories: question.options.map((opt: any) => opt.label) }
-        };
-      default:
-        return baseOptions;
-    }
   };
 
   const renderQuestionSection = (question: any, bgColor: string, borderColor: string) => (
@@ -108,49 +61,16 @@ const DateAnalysisChartsApex = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Timeline Trend</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Chart 
-              options={createChartOptions(question, 'Line Chart')} 
-              series={[{ name: 'Responses', data: question.options.map((opt: any) => opt.responses) }]} 
-              type="line" 
-              height={350} 
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Area View</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Chart 
-              options={createChartOptions(question, 'Area Chart')} 
-              series={[{ name: 'Participants', data: question.options.map((opt: any) => opt.responses) }]} 
-              type="area" 
-              height={350} 
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Distribution</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Chart 
-              options={createChartOptions(question, 'Bar Chart')} 
-              series={[{ name: 'Responses', data: question.options.map((opt: any) => opt.responses) }]} 
-              type="bar" 
-              height={350} 
-            />
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardContent className="pt-6">
+          <Chart 
+            options={createChartOptions(question)} 
+            series={[{ name: 'Responses', data: question.options.map((opt: any) => opt.responses) }]} 
+            type="area" 
+            height={350} 
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 
@@ -162,8 +82,6 @@ const DateAnalysisChartsApex = () => {
       </div>
 
       {renderQuestionSection(trainingDateQuestion, "bg-blue-50", "border-blue-500")}
-      {renderQuestionSection(projectStartQuestion, "bg-green-50", "border-green-500")}
-      {renderQuestionSection(reviewDateQuestion, "bg-purple-50", "border-purple-500")}
     </div>
   );
 };
